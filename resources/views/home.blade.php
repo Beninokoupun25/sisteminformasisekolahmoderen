@@ -167,7 +167,7 @@
                     <span class="eyebrow">Berita &amp; Pengumuman</span>
                     <h2>Kabar terbaru dari sekolah</h2>
                 </div>
-                <a class="btn btn--ghost btn--sm" href="#berita">
+                <a class="btn btn--ghost btn--sm" href="{{ route('posts.index') }}">
                     Lihat semua
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
                 </a>
@@ -176,21 +176,27 @@
             <div class="news-grid">
                 @forelse ($posts as $post)
                     <article class="news-card" data-reveal>
-                        <div
+                        <a
                             class="news-card__thumb news-card__thumb--a"
-                            @if ($post->featured_image)
-                                style="background-image: linear-gradient(180deg, rgba(6, 26, 58, 0.1), rgba(6, 26, 58, 0.55)), url('{{ asset('storage/' . $post->featured_image) }}'); background-size: cover; background-position: center;"
+                            href="{{ route('posts.show', $post) }}"
+                            aria-label="Baca {{ $post->title }}"
+                            @if ($post->featured_image_url)
+                                style="background-image: linear-gradient(180deg, rgba(6, 26, 58, 0.1), rgba(6, 26, 58, 0.55)), url('{{ $post->featured_image_url }}'); background-size: cover; background-position: center;"
                             @endif
                         >
                             <span class="news-card__cat">{{ $post->category?->name ?? ucfirst($post->type) }}</span>
-                        </div>
+                        </a>
                         <div class="news-card__body">
                             <span class="news-card__date">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
                                 {{ $post->published_at->locale('id')->translatedFormat('d F Y') }}
                             </span>
-                            <h3>{{ $post->title }}</h3>
+                            <h3><a href="{{ route('posts.show', $post) }}">{{ $post->title }}</a></h3>
                             <p>{{ $post->excerpt ?: \Illuminate\Support\Str::limit(strip_tags($post->body), 140) }}</p>
+                            <a class="news-card__link" href="{{ route('posts.show', $post) }}">
+                                Baca selengkapnya
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>
+                            </a>
                         </div>
                     </article>
                 @empty
@@ -210,6 +216,14 @@
                 <div class="news-grid">
                     @foreach ($upcomingEvents as $event)
                         <article class="news-card" data-reveal>
+                            <div
+                                class="news-card__thumb news-card__thumb--b"
+                                @if ($event->image_url)
+                                    style="background-image: linear-gradient(180deg, rgba(6, 26, 58, 0.1), rgba(6, 26, 58, 0.55)), url('{{ $event->image_url }}'); background-size: cover; background-position: center;"
+                                @endif
+                            >
+                                <span class="news-card__cat">Kegiatan</span>
+                            </div>
                             <div class="news-card__body">
                                 <span class="news-card__date">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>
@@ -260,6 +274,68 @@
         </div>
     </section>
 
+    <section class="section section--tight" id="lokasi">
+        <div class="container">
+            <div class="section__head section__head--split" data-reveal>
+                <div>
+                    <span class="eyebrow">Lokasi Sekolah</span>
+                    <h2>Temukan kami di Waipia</h2>
+                </div>
+                <a class="btn btn--ghost btn--sm" href="https://www.google.com/maps/search/?api=1&amp;query=-3.2045,129.0234" target="_blank" rel="noopener noreferrer">
+                    Buka di Google Maps
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+                </a>
+            </div>
+
+            <div class="location" data-reveal>
+                <div class="location__map">
+                    <iframe
+                        src="https://maps.google.com/maps?q=-3.2045,129.0234&amp;z=16&amp;hl=id&amp;output=embed"
+                        title="Lokasi SMA Negeri 17 Maluku Tengah"
+                        loading="lazy"
+                        allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"
+                    ></iframe>
+                </div>
+
+                <aside class="location__info">
+                    <h3>SMA Negeri 17 Maluku Tengah</h3>
+                    <p>Kunjungi kampus kami di Waipia untuk mendapatkan informasi langsung mengenai sekolah.</p>
+
+                    <ul class="location__list">
+                        <li>
+                            <span class="location__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+                            </span>
+                            <div>
+                                <strong>Alamat</strong>
+                                <span>Jl. Haji Adam Malik-Waipia, Layeni, Kec. Teon Nila Serua, Kab. Maluku Tengah, Maluku 97558</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="location__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                            </span>
+                            <div>
+                                <strong>Email</strong>
+                                <span>sman17malteng@gmail.com</span>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="location__icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                            </span>
+                            <div>
+                                <strong>Jam Operasional</strong>
+                                <span>Senin &ndash; Jumat, 07.00 &ndash; 16.00 WIT</span>
+                            </div>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+    </section>
+
     <section class="section">
         <div class="container">
             <div class="cta" data-reveal>
@@ -269,9 +345,9 @@
                     <p>Akses khusus untuk admin, operator, dan guru dalam mengelola konten serta informasi SMAN 17 MALTENG.</p>
                     <div class="cta__actions">
                         <a class="btn btn--light" href="{{ route('login') }}">Log in</a>
-                        <a class="btn btn--outline-light" href="tel:+62221234567">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 4h3l2 5-2 1a12 12 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
-                            Hubungi Admin
+                        <a class="btn btn--outline-light" href="mailto:sman17malteng@gmail.com">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
+                            Email Admin
                         </a>
                     </div>
                 </div>
@@ -286,7 +362,7 @@
                     </div>
                     <div class="cta__info-item">
                         <strong>Bantuan</strong>
-                        <span>Senin &ndash; Jumat, 07.00 &ndash; 16.00 WIB</span>
+                        <span>Senin &ndash; Jumat, 07.00 &ndash; 16.00 WIT</span>
                     </div>
                 </div>
             </div>

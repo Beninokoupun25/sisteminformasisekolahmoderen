@@ -22,7 +22,7 @@ class HomeController extends Controller
                 ->filter(),
             'posts' => Post::query()
                 ->with('category:id,name,slug')
-                ->where('status', 'published')
+                ->where('status', 'publish')
                 ->whereNotNull('published_at')
                 ->where('published_at', '<=', now())
                 ->orderByDesc('published_at')

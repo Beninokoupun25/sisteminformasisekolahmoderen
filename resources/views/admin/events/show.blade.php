@@ -12,6 +12,12 @@
             <a class="btn btn--ghost btn--sm" href="{{ route('admin.events.index') }}">Kembali</a>
         </div>
 
+        @if ($event->image_url)
+            <div class="admin-card__body">
+                <img class="admin-image-preview" src="{{ $event->image_url }}" alt="{{ $event->title }}">
+            </div>
+        @endif
+
         <div class="admin-card__body">
             <dl class="admin-detail">
                 <dt>Deskripsi</dt>

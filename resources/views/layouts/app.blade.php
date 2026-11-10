@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SMAN 17 MALTENG — Sistem Informasi Sekolah')</title>
     <meta name="description" content="@yield('description', 'Sistem Informasi SMAN 17 MALTENG — pusat informasi, berita, dan kegiatan sekolah.')">
+    <link rel="icon" type="image/png" href="{{ asset('logo22.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -19,12 +20,7 @@
             <nav class="navbar" aria-label="Navigasi utama">
                 <a class="brand" href="{{ route('home') }}" aria-label="SMAN 17 MALTENG — Beranda">
                     <span class="brand__mark" aria-hidden="true">
-                        <svg viewBox="0 0 32 32" fill="none">
-                            <path d="M16 4 28 10 16 16 4 10 16 4Z" fill="currentColor"/>
-                            <path d="M9 13v6c0 4 14 4 14 0v-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                            <path d="M27 11v8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                            <circle cx="27" cy="21" r="1.8" fill="currentColor"/>
-                        </svg>
+                        <img src="{{ asset('logo22.png') }}" alt="">
                     </span>
                     <span class="brand__text">
                         <strong>SMAN 17 MALTENG</strong>
@@ -37,11 +33,12 @@
                 </button>
 
                 <ul class="nav-links" id="primaryNav">
-                    <li><a class="is-active" href="{{ route('home') }}">Beranda</a></li>
-                    <li><a href="#profil">Profil</a></li>
-                    <li><a href="#program">Program</a></li>
-                    <li><a href="#berita">Berita</a></li>
-                    <li><a href="#galeri">Galeri</a></li>
+                    <li><a class="{{ request()->routeIs('home') ? 'is-active' : '' }}" href="{{ route('home') }}">Beranda</a></li>
+                    <li><a href="{{ route('home') }}#profil">Profil</a></li>
+                    <li><a href="{{ route('home') }}#program">Program</a></li>
+                    <li><a class="{{ request()->routeIs('posts.*') ? 'is-active' : '' }}" href="{{ route('posts.index') }}">Berita</a></li>
+                    <li><a href="{{ route('home') }}#galeri">Galeri</a></li>
+                    <li><a href="{{ route('home') }}#lokasi">Lokasi</a></li>
                     <li><a href="#kontak">Kontak</a></li>
                     <li class="nav-links__cta">
                         @auth
@@ -66,12 +63,7 @@
                 <div class="footer__brand">
                     <a class="brand" href="{{ route('home') }}">
                         <span class="brand__mark" aria-hidden="true">
-                            <svg viewBox="0 0 32 32" fill="none">
-                                <path d="M16 4 28 10 16 16 4 10 16 4Z" fill="currentColor"/>
-                                <path d="M9 13v6c0 4 14 4 14 0v-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                                <path d="M27 11v8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                                <circle cx="27" cy="21" r="1.8" fill="currentColor"/>
-                            </svg>
+                            <img src="{{ asset('logo22.png') }}" alt="">
                         </span>
                         <span class="brand__text">
                             <strong>SMAN 17 MALTENG</strong>
@@ -95,10 +87,11 @@
                 <div>
                     <h4>Tautan Cepat</h4>
                     <ul>
-                        <li><a href="#profil">Profil Sekolah</a></li>
-                        <li><a href="#program">Program</a></li>
-                        <li><a href="#berita">Berita &amp; Pengumuman</a></li>
-                        <li><a href="#galeri">Galeri Kegiatan</a></li>
+                        <li><a href="{{ route('home') }}#profil">Profil Sekolah</a></li>
+                        <li><a href="{{ route('home') }}#program">Program</a></li>
+                        <li><a href="{{ route('posts.index') }}">Berita &amp; Pengumuman</a></li>
+                        <li><a href="{{ route('home') }}#galeri">Galeri Kegiatan</a></li>
+                        <li><a href="{{ route('home') }}#lokasi">Lokasi Sekolah</a></li>
                     </ul>
                 </div>
 
@@ -117,15 +110,15 @@
                     <ul class="footer__contact">
                         <li>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s7-5.4 7-11a7 7 0 1 0-14 0c0 5.6 7 11 7 11Z"/><circle cx="12" cy="10" r="2.5"/></svg>
-                            <span>Jl. Pendidikan No. 123, Maluku Tengah, Maluku</span>
+                            <span>Jl. Haji Adam Malik-Waipia, Layeni, Kec. Teon Nila Serua, Kab. Maluku Tengah, Maluku 97558</span>
                         </li>
                         <li>
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 4h3l2 5-2 1a12 12 0 0 0 6 6l1-2 5 2v3a2 2 0 0 1-2 2A17 17 0 0 1 3 6a2 2 0 0 1 2-2Z"/></svg>
-                            <span>(022) 123-4567</span>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+                            <span>Senin &ndash; Jumat, 07.00 &ndash; 16.00 WIT</span>
                         </li>
                         <li>
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 6h16v12H4z"/><path d="m4 7 8 6 8-6"/></svg>
-                            <span>info@sman17malteng.sch.id</span>
+                            <span>sman17malteng@gmail.com</span>
                         </li>
                     </ul>
                 </div>

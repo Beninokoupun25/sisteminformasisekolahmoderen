@@ -11,7 +11,7 @@
             <a class="btn btn--ghost btn--sm" href="{{ route('admin.posts.index') }}">Kembali</a>
         </div>
 
-        <form method="POST" action="{{ route('admin.posts.store') }}" class="admin-form">
+        <form method="POST" action="{{ route('admin.posts.store') }}" class="admin-form" enctype="multipart/form-data">
             @csrf
             <div class="admin-form__group">
                 <label class="admin-form__label">Judul</label>
@@ -35,7 +35,7 @@
             </div>
             <div class="admin-form__group">
                 <label class="admin-form__label">Tipe</label>
-                <input type="text" name="type" value="{{ old('type') }}" class="admin-form__input" placeholder="Contoh: berita">
+                <input type="text" name="type" value="{{ old('type', 'berita') }}" class="admin-form__input" placeholder="Contoh: berita">
                 @error('type') <p class="admin-form__error">{{ $message }}</p> @enderror
             </div>
             <div class="admin-form__group">
@@ -54,12 +54,13 @@
             </div>
             <div class="admin-form__group">
                 <label class="admin-form__label">Isi</label>
-                <textarea name="body" class="admin-form__input" rows="8">{{ old('body') }}</textarea>
+                <textarea name="body" class="admin-form__input" rows="8" required>{{ old('body') }}</textarea>
                 @error('body') <p class="admin-form__error">{{ $message }}</p> @enderror
             </div>
             <div class="admin-form__group">
-                <label class="admin-form__label">Gambar Unggulan (URL)</label>
-                <input type="url" name="featured_image" value="{{ old('featured_image') }}" class="admin-form__input">
+                <label class="admin-form__label">Gambar Unggulan</label>
+                <input type="file" name="featured_image" accept="image/*" class="admin-form__input">
+                <p class="admin-form__hint">Format JPG, PNG, atau WEBP. Maksimal 2 MB.</p>
                 @error('featured_image') <p class="admin-form__error">{{ $message }}</p> @enderror
             </div>
             <div class="admin-form__group">

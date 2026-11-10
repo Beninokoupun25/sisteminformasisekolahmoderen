@@ -10,7 +10,11 @@ class SchoolProfileController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(SchoolProfile::class, 'schoolProfile');
+        $this->middleware(function ($request, $next) {
+            abort_unless($request->user()?->isAdmin(), 403);
+
+            return $next($request);
+        });
     }
 
     public function index()

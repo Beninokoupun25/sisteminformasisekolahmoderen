@@ -9,7 +9,7 @@
         <div class="admin-card">
             <div class="admin-card__head">
                 <h2>Profil Sekolah</h2>
-                <a class="btn btn--primary btn--sm" href="{{ route('admin.profile.update', $profile->id ?? 'profile') }}">Edit</a>
+                <a class="btn btn--primary btn--sm" href="{{ route('admin.profile.edit') }}">Edit</a>
             </div>
 
             <div class="admin-card__body">
@@ -31,7 +31,7 @@
         <div class="admin-card">
             <div class="admin-card__head">
                 <h2>Profil Sekolah</h2>
-                <a class="btn btn--primary btn--sm" href="{{ route('admin.profiles.update', 'profile') }}">Buat Profil</a>
+                <a class="btn btn--primary btn--sm" href="{{ route('admin.profile.edit') }}">Buat Profil</a>
             </div>
             <p class="admin-empty">Belum ada profil sekolah yang tersimpan.</p>
         </div>

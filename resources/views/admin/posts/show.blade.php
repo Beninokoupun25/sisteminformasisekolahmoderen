@@ -12,6 +12,12 @@
             <a class="btn btn--ghost btn--sm" href="{{ route('admin.posts.index') }}">Kembali</a>
         </div>
 
+        @if ($post->featured_image_url)
+            <div class="admin-card__body">
+                <img class="admin-image-preview" src="{{ $post->featured_image_url }}" alt="{{ $post->title }}">
+            </div>
+        @endif
+
         <div class="admin-card__body">
             <dl class="admin-detail">
                 <dt>Slug</dt>

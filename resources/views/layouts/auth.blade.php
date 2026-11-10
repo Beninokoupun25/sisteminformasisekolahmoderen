@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Log in — SMAN 17 MALTENG')</title>
     <meta name="description" content="@yield('description', 'Masuk ke Sistem Informasi SMAN 17 MALTENG.')">
+    <link rel="icon" type="image/png" href="{{ asset('logo22.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -16,12 +17,7 @@
         <aside class="auth-visual" style="background-image: url('{{ asset('2.jpeg') }}')">
             <a class="brand" href="{{ route('home') }}" aria-label="SMAN 17 MALTENG — Beranda">
                 <span class="brand__mark" aria-hidden="true">
-                    <svg viewBox="0 0 32 32" fill="none">
-                        <path d="M16 4 28 10 16 16 4 10 16 4Z" fill="currentColor"/>
-                        <path d="M9 13v6c0 4 14 4 14 0v-6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                        <path d="M27 11v8" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/>
-                        <circle cx="27" cy="21" r="1.8" fill="currentColor"/>
-                    </svg>
+                    <img src="{{ asset('logo22.png') }}" alt="">
                 </span>
                 <span class="brand__text">
                     <strong>SMAN 17 MALTENG</strong>

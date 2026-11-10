@@ -31,7 +31,7 @@ class GalleryController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'type' => ['required', 'string', 'max:50'],
-            'file_path' => ['nullable', 'string', 'max:255'],
+            'file_path' => ['required', 'string', 'max:255'],
             'thumbnail_path' => ['nullable', 'string', 'max:255'],
         ]);
 
@@ -63,7 +63,7 @@ class GalleryController extends Controller
             'title' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string'],
             'type' => ['required', 'string', 'max:50'],
-            'file_path' => ['nullable', 'string', 'max:255'],
+            'file_path' => ['required', 'string', 'max:255'],
             'thumbnail_path' => ['nullable', 'string', 'max:255'],
         ]);
 

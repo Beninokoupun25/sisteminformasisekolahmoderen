@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Event;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class EventController extends Controller
 {
@@ -33,7 +35,12 @@ class EventController extends Controller
             'start_date' => ['required', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'location' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
+
+        if ($request->hasFile('image')) {
+            $validated['image'] = $request->file('image')->store('events', 'public');
+        }
 
         Event::create(array_merge($validated, [
             'user_id' => auth()->id(),
@@ -65,7 +72,15 @@ class EventController extends Controller
             'start_date' => ['required', 'date'],
             'end_date' => ['nullable', 'date', 'after_or_equal:start_date'],
             'location' => ['nullable', 'string', 'max:255'],
+            'image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
         ]);
+
+        if ($request->hasFile('image')) {
+            $this->deleteImage($event->image);
+            $validated['image'] = $request->file('image')->store('events', 'public');
+        } else {
+            unset($validated['image']);
+        }
 
         $event->update($validated);
 
@@ -75,9 +90,19 @@ class EventController extends Controller
 
     public function destroy(Event $event)
     {
+        $this->deleteImage($event->image);
         $event->delete();
 
         return redirect()->route('admin.events.index')
             ->with('success', 'Event berhasil dihapus.');
+    }
+
+    private function deleteImage(?string $path): void
+    {
+        if (! $path || Str::startsWith($path, ['http://', 'https://'])) {
+            return;
+        }
+
+        Storage::disk('public')->delete(Str::after($path, 'storage/'));
     }
 }

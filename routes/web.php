@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\TagController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PostController as PublicPostController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,8 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/berita', [PublicPostController::class, 'index'])->name('posts.index');
+Route::get('/berita/{post:slug}', [PublicPostController::class, 'show'])->name('posts.show');
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'show'])->name('login');
@@ -42,7 +45,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('galleries', GalleryController::class);
         Route::resource('contacts', ContactController::class)->only(['index', 'show', 'destroy']);
         Route::resource('events', EventController::class);
-        Route::resource('profile', SchoolProfileController::class)->only(['index', 'update']);
+        Route::get('profile', [SchoolProfileController::class, 'index'])->name('profile.index');
+        Route::get('profile/edit', [SchoolProfileController::class, 'edit'])->name('profile.edit');
+        Route::put('profile/{profile?}', [SchoolProfileController::class, 'update'])->name('profile.update');
         Route::resource('users', UserController::class);
     });
 });

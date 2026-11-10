@@ -34,7 +34,7 @@
             </div>
             <div class="admin-form__group">
                 <label class="admin-form__label">Path File</label>
-                <input type="text" name="file_path" value="{{ old('file_path', $gallery->file_path) }}" class="admin-form__input">
+                <input type="text" name="file_path" value="{{ old('file_path', $gallery->file_path) }}" class="admin-form__input" required>
                 @error('file_path') <p class="admin-form__error">{{ $message }}</p> @enderror
             </div>
             <div class="admin-form__group">

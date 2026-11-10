@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use App\Models\Category;
+use App\Models\Post;
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -40,18 +41,28 @@ class PostController extends Controller
             'type' => ['nullable', 'string', 'max:50'],
             'status' => ['required', 'string', 'max:50'],
             'excerpt' => ['nullable', 'string'],
-            'body' => ['nullable', 'string'],
-            'featured_image' => ['nullable', 'string', 'max:255'],
+            'body' => ['required', 'string'],
+            'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'published_at' => ['nullable', 'date'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['exists:tags,id'],
         ]);
 
+        $validated['type'] = $validated['type'] ?? 'berita';
+
+        if ($validated['status'] === 'publish' && empty($validated['published_at'])) {
+            $validated['published_at'] = now();
+        }
+
+        if ($request->hasFile('featured_image')) {
+            $validated['featured_image'] = $request->file('featured_image')->store('posts', 'public');
+        }
+
         $post = Post::create(array_merge($validated, [
             'user_id' => auth()->id(),
         ]));
 
-        if (!empty($validated['tags'])) {
+        if (! empty($validated['tags'])) {
             $post->tags()->sync($validated['tags']);
         }
 
@@ -80,16 +91,29 @@ class PostController extends Controller
         $validated = $request->validate([
             'category_id' => ['nullable', 'exists:categories,id'],
             'title' => ['required', 'string', 'max:255'],
-            'slug' => ['required', 'string', 'max:255', 'unique:posts,slug,' . $post->id],
+            'slug' => ['required', 'string', 'max:255', 'unique:posts,slug,'.$post->id],
             'type' => ['nullable', 'string', 'max:50'],
             'status' => ['required', 'string', 'max:50'],
             'excerpt' => ['nullable', 'string'],
-            'body' => ['nullable', 'string'],
-            'featured_image' => ['nullable', 'string', 'max:255'],
+            'body' => ['required', 'string'],
+            'featured_image' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:2048'],
             'published_at' => ['nullable', 'date'],
             'tags' => ['nullable', 'array'],
             'tags.*' => ['exists:tags,id'],
         ]);
+
+        $validated['type'] = $validated['type'] ?? $post->type;
+
+        if ($validated['status'] === 'publish' && empty($validated['published_at'])) {
+            $validated['published_at'] = $post->published_at ?? now();
+        }
+
+        if ($request->hasFile('featured_image')) {
+            $this->deleteImage($post->featured_image);
+            $validated['featured_image'] = $request->file('featured_image')->store('posts', 'public');
+        } else {
+            unset($validated['featured_image']);
+        }
 
         $post->update($validated);
 
@@ -107,5 +131,14 @@ class PostController extends Controller
 
         return redirect()->route('admin.posts.index')
             ->with('success', 'Post berhasil dihapus.');
+    }
+
+    private function deleteImage(?string $path): void
+    {
+        if (! $path || Str::startsWith($path, ['http://', 'https://'])) {
+            return;
+        }
+
+        Storage::disk('public')->delete(Str::after($path, 'storage/'));
     }
 }

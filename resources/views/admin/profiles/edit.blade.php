@@ -11,7 +11,7 @@
             <a class="btn btn--ghost btn--sm" href="{{ route('admin.profile.index') }}">Kembali</a>
         </div>
 
-        <form method="POST" action="{{ route('admin.profile.update', $profile ? $profile->id : 'profile') }}" class="admin-form">
+        <form method="POST" action="{{ route('admin.profile.update') }}" class="admin-form">
             @csrf
             @method('PUT')
             <div class="admin-form__group">
@@ -41,7 +41,7 @@
             </div>
             <div class="admin-form__actions">
                 <button type="submit" class="btn btn--primary">Simpan</button>
-                <a class="btn btn--ghost" href="{{ route('admin.profiles.index') }}">Batal</a>
+                <a class="btn btn--ghost" href="{{ route('admin.profile.index') }}">Batal</a>
             </div>
         </form>
     </div>
